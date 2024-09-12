@@ -1,7 +1,7 @@
 // scripts.js
 document.addEventListener("DOMContentLoaded", function() {
     // Function to load a Markdown file and display it
-    function loadMarkdown(file) {
+    function loadMarkdown(file, pushToHistory = true) {
         fetch(`docs/${file}`)
             .then(response => {
                 if (!response.ok) {
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         event.preventDefault();
                         const href = this.getAttribute('href');
                         if (href.endsWith('.md')) {
-                            loadMarkdown(href);
+                            loadMarkdown(href, true);
                         } else {
                             window.location.href = href; // For external links
                         }
@@ -30,10 +30,24 @@ document.addEventListener("DOMContentLoaded", function() {
             .catch(error => {
                 document.getElementById('content').innerHTML = `<p>Error loading file: ${error.message}</p>`;
             });
+
+        // Update the URL and browser history
+        if (pushToHistory) {
+            history.pushState({ file: file }, '', `?file=${file}`);
+        }
     }
 
-    // Get file from URL parameter or default to README.md
+    // Function to handle browser navigation
+    function handlePopState(event) {
+        const file = event.state ? event.state.file : 'README.md';
+        loadMarkdown(file, false);
+    }
+
+    // Initialize content based on URL parameter or default to README.md
     const urlParams = new URLSearchParams(window.location.search);
-    const file = urlParams.get('file') || 'Index.md'; // Adjust path if needed
-    loadMarkdown(file);
+    const initialFile = urlParams.get('file') || 'Index.md';
+    loadMarkdown(initialFile, false);
+
+    // Add event listener for browser back/forward buttons
+    window.addEventListener('popstate', handlePopState);
 });
