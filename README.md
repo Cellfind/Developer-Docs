@@ -1,5 +1,5 @@
 # Developer Resources
 
-test
+[test]
 
 [test]: https://github.com/markedjs/marked/
