@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Set default file to README.md or get from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
-    const file = urlParams.get('file') || 'README.md'; // Adjust path if needed
+    const file = urlParams.get('file') || 'Index.md'; // Adjust path if needed
 
     fetch(`docs/${file}`)
         .then(response => {
