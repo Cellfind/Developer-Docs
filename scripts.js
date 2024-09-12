@@ -13,13 +13,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Convert Markdown to HTML and update content
                 const htmlContent = marked.parse(data);
                 document.getElementById('content').innerHTML = htmlContent;
-                
+
                 // Add event listeners for links in the content
                 document.querySelectorAll('#content a').forEach(link => {
                     link.addEventListener('click', function(event) {
                         event.preventDefault();
                         const href = this.getAttribute('href');
-                        loadMarkdown(href);
+                        if (href.endsWith('.md')) {
+                            loadMarkdown(href);
+                        } else {
+                            window.location.href = href; // For external links
+                        }
                     });
                 });
             })
