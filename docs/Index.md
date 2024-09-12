@@ -2,4 +2,4 @@
 
 1. [Test Page]
 
-[Test Page]: /docs/README.md
+[Test Page]: README.md
